@@ -1,13 +1,10 @@
 ## Slides on fuzzing and Mozilla in 2016 (originally for 2015)
 #### ... and where fuzzing sits in a Mozilla workflow.
 
-##### View it online in various languages:
-1. [English](http://nth10sd.github.io/2015-Fuzzing-and-Mozilla/?full=&lang=en-US#cover)
-2. [Chinese (Simplified)](http://nth10sd.github.io/2015-Fuzzing-and-Mozilla/?full=&lang=zh-CN#cover)
-3. [Chinese (Traditional)](http://nth10sd.github.io/2015-Fuzzing-and-Mozilla/?full=&lang=zh-TW#cover)
-4. [Japanese](http://nth10sd.github.io/2015-Fuzzing-and-Mozilla/?full=&lang=ja-JP#cover)
+##### View it online:
+1. English
 
-Pull requests for corrections and additional translations are most welcome!
+Pull requests for corrections are most welcome!
 
 ## Talk description
 This presentation describes where fuzzing sits in a Mozilla development workflow in 2016 (originally for 2015).
