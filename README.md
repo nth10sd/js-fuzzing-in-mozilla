@@ -2,7 +2,7 @@
 #### ... and where fuzzing sits in a Mozilla workflow.
 
 ##### View it online:
-1. English
+1. [English](https://nth10sd.github.io/js-fuzzing-in-mozilla/)
 
 Pull requests for corrections are most welcome!
 
