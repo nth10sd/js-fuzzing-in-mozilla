@@ -13,7 +13,7 @@
   <head>
     <meta charset="UTF-8">
     <title>
-    Fuzzing and Mozilla: 2016 | 模糊测试与Mozilla：2016 | 模糊測試與Mozilla：2016 | ファジングと Mozilla：2016
+    JavaScript Fuzzing in Mozilla, 2017
     </title>
     <!--
     If you upload your slides to the web, ensure that you have
@@ -25,23 +25,21 @@
   </head>
   <body class="list">
     <header class="caption">
-      <div class="en-US"><h1>Fuzzing and Mozilla: 2016</h1></div>
+      <div class="en-US"><h1>JavaScript Fuzzing in Mozilla, 2017</h1></div>
       <div class="en-US"><p class="footer">
         Gary Kwong,
-        <a href="https://twitter.com/nth10sd">@nth10sd</a> or
+        <a href="https://github.com/nth10sd">GitHub: nth10sd</a> or
         <a href="mailto:gkw@mozilla.com">gkw@mozilla.com</a>
       </p></div>
     </header>
     <aside class="talkdescription">
-      <div class="en-US">This presentation describes where fuzzing sits in a Mozilla development workflow in 2016. It will mention how you can leverage it in your workflow to make development more efficient, and will not cover fuzzing itself in detail.</div>
+      <div class="en-US">This presentation describes how fuzzing is leveraged in the Mozilla development workflow for the JavaScript engine in 2017. It will mention how you can use it in your workflow to make development more efficient, and will not cover fuzzing itself in detail.</div>
       <br/>
       <div class="en-US">English version by Gary Kwong.</div>
       <button onclick="goFullScreen()">Go fullscreen</button>
       <br/>
       <br/>
-      <div class="en-US"><p>Abstract: The Mozilla Gecko platform has many moving parts. There are increasingly more areas which need testing to ensure good quality and safety of the users.
-        In this presentation, Senior Security Engineer Gary Kwong will describe how fuzzing can be leveraged in the Mozilla development workflow. Gary will talk about fuzzing tools, suggested automation building blocks and ways to start deploying fuzzing quickly.
-      A case study on the success of the fuzzing team working together with the JavaScript team will be described. Furthermore, he will also cover the potential pitfalls of this approach and conditions under which fuzzing can be most effective.</p></div>
+      <div class="en-US"><p>In Mozilla Firefox, the JavaScript engine (SpiderMonkey) is an important component of the Gecko platform. In this presentation, Senior Security Engineer Gary Kwong will describe how fuzzing is leveraged in the Mozilla development workflow for the JavaScript engine. He will talk about various fuzzing tools (e.g. jsfunfuzz) for such engines. The potential pitfalls of this approach and conditions under which fuzzing can be most effective will also be discussed. Finally, he will touch on some future plans for these tools.</p></div>
     </aside>
     <!--
     Simply copy the whole block for each slide you want.
@@ -51,9 +49,9 @@
     <div id="cover" class="slide oneline"><div>
       <section>
         <header>
-          <div class="en-US"><h2>Fuzzing and Mozilla: 2016</h2></div>
+          <div class="en-US"><h2>JavaScript Fuzzing in Mozilla, 2017</h2></div>
         </header>
-        <div class="en-US"><small class="byline">Gary Kwong, Senior Security Engineer, Taipei, Tokyo, Hong Kong 2015-2016</small></div>
+        <div class="en-US"><small class="byline">Gary Kwong, Senior Security Engineer, Hong Kong, Taipei, Tokyo 2015-2017</small></div>
         <footer class="notes">
         </footer>
       </section>
@@ -92,8 +90,18 @@
     <!-- end slide block -->
     <div id="xkcdcompiling" class="slide"><div>
       <section>
-        <img src="https://imgs.xkcd.com/comics/compiling.png" class="middle" alt="xkcd compiling">
+        <img src="pictures/xkcdcompiling.png" class="middle" alt="xkcd compiling">
         <footer class="notes">
+          Credits: <a href="https://imgs.xkcd.com/comics/compiling.png">https://imgs.xkcd.com/comics/compiling.png</a>
+        </footer>
+      </section>
+    </div></div>
+    <!-- end slide block -->
+    <div id="xkcdfuzzing" class="slide"><div>
+      <section>
+        <img src="pictures/xkcdfuzzing.png" class="middle" alt="xkcd fuzzing">
+        <footer class="notes">
+          Adapted from: <a href="https://imgs.xkcd.com/comics/compiling.png">https://imgs.xkcd.com/comics/compiling.png</a>
         </footer>
       </section>
     </div></div>
@@ -165,15 +173,17 @@
       </section>
     </div></div>
     <!-- end slide block -->
-    <div id="who" class="slide cover w"><div>
+    <div id="who" class="slide"><div>
       <section>
         <header>
-          <div class="en-US"><h2>Mozilla Platform Fuzzing team</h2></div>
+          <div class="en-US"><h2>Platform Fuzzing team</h2></div>
         </header>
-        <img src="pictures/teammap.png"
+        <img src="pictures/teammap17.png"
+        style="width:1000px"
         class="middle"
         alt="Map of fuzzing team">
         <footer class="notes">
+          <div class="en-US">Mozilla's platform fuzzing team spans multiple nations and languages, across various continents.</div>
         </footer>
       </section>
     </div></div>
@@ -188,10 +198,15 @@
             <div class="en-US"><a href="http://freecode.com/projects/mangleme/">mangleme</a> - Michał Zalewski</div>
           </li>
           <li>
-            <div class="en-US"><a href="http://www.squarefree.com/2015/07/28/releasing-jsfunfuzz-and-domfuzz/">jsfunfuzz</a> - Jesse Ruderman</div>
+            <div class="en-US"><a href="https://github.com/MozillaSecurity/funfuzz">jsfunfuzz</a> - Jesse Ruderman &amp; Gary Kwong</div>
           </li>
           <li>
-            <div class="en-US"><a href="http://www.squarefree.com/2015/07/28/releasing-jsfunfuzz-and-domfuzz/">DOMFuzz</a> - Jesse Ruderman</div>
+            <div class="en-US" style="text-decoration: line-through;"><a href="http://www.squarefree.com/2015/07/28/releasing-jsfunfuzz-and-domfuzz/">DOMFuzz</a> - Jesse Ruderman</div>
+            <ul>
+              <li>
+                <div class="en-US">Potential replacement: DOMFuzz2</div>
+              </li>
+            </ul>
           </li>
         </ul>
         <footer class="notes">
@@ -213,7 +228,7 @@
             <div class="en-US"><a href="http://www.peachfuzzer.com/">Peach</a></div>
           </li>
           <li>
-            <div class="en-US"><a href="http://lcamtuf.coredump.cx/afl/">American Fuzzy Lop</a> - Michał Zalewski</div>
+            <div class="en-US"><a href="http://lcamtuf.coredump.cx/afl/">American Fuzzy Lop</a> (AFL) - Michał Zalewski</div>
           </li>
           <li>
             <div class="en-US"><a href="https://github.com/mozillasecurity/dharma">Dharma</a> - Christoph Diehl</div>
@@ -225,21 +240,26 @@
       </section>
     </div></div>
     <!-- end slide block -->
+    <div id="bounty" class="slide"><div>
+      <section>
+        <header>
+          <div class="en-US"><h2>Bug Bounty programs</h2></div>
+        </header>
+        <img src="pictures/bugbounty.png"
+        style="width:1000px"
+        class="middle"
+        alt="Bug bounty programs">
+        <footer class="notes">
+        </footer>
+      </section>
+    </div></div>
+    <!-- end slide block -->
     <div id="whysuccessful" class="slide"><div>
       <section>
         <header>
           <div class="en-US"><h2>Why is fuzzing successful?</h2></div>
         </header>
         <ul>
-          <li>
-            <div class="en-US">Bug counts</div>
-            <ul>
-              <li>6,450 - jsfunfuzz &amp; DOMFuzz</li>
-              <li>
-                <div class="en-US">&gt;12% sec-critical</div>
-              </li>
-            </ul>
-          </li>
           <li>
             <div class="en-US">Bug bounty programs</div>
             <ul>
@@ -252,6 +272,17 @@
                 </ul>
               </li>
               <li><a href="https://www.google.com/about/appsecurity/chrome-rewards/">Google</a></li>
+              <li><a href="https://technet.microsoft.com/en-us/library/dn425036.aspx">Microsoft</a></li>
+              <li><a href="https://www.theverge.com/2016/8/4/12380036/apple-bug-bounty-program-vulnerability-security">Apple</a> (via The Verge)</li>
+            </ul>
+          </li>
+          <li>
+            <div class="en-US">Bug counts</div>
+            <ul>
+              <li>~7,000 - jsfunfuzz &amp; DOMFuzz</li>
+              <li>
+                <div class="en-US">&gt;10% sec-critical</div>
+              </li>
             </ul>
           </li>
         </ul>
@@ -292,20 +323,6 @@
       </section>
     </div></div>
     <!-- end slide block -->
-    <div id="agquote" class="slide"><div>
-      <section>
-        <header>
-          <div class="en-US"><h2>Quote</h2></div>
-        </header>
-        <blockquote>
-          <div class="en-US"><p>From this day on forward, I shall never write a JIT (compiler) again without Jesse.</p></div>
-          <div class="en-US"><p class="byline"><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=457778#c2">Andreas Gal</a>, ex-Mozilla CTO</p></div>
-        </blockquote>
-        <footer class="notes">
-        </footer>
-      </section>
-    </div></div>
-    <!-- end slide block -->
     <div id="lowhangingfruit" class="slide"><div>
       <section>
         <header>
@@ -313,27 +330,19 @@
         </header>
         <ul>
           <li>
-            <div class="en-US">Modules that:</div>
-            <ul>
-              <li>
-                <div class="en-US">Are written in a unsafe language</div>
-              </li>
-              <li>
-                <div class="en-US">Are less sandboxed</div>
-              </li>
-              <li>
-                <div class="en-US">Parse attacker-controlled input</div>
-              </li>
-              <li>
-                <div class="en-US">Implement security boundaries</div>
-              </li>
-              <li>
-                <div class="en-US">Maintain critical invariants</div>
-              </li>
-              <li>
-                <div class="en-US">Other security researchers are working on</div>
-              </li>
-            </ul>
+            <div class="en-US">In an unsafe language?</div>
+          </li>
+          <li>
+            <div class="en-US">Well-sandboxed or not?</div>
+          </li>
+          <li>
+            <div class="en-US">Parsing controllable input?</div>
+          </li>
+          <li>
+            <div class="en-US">Security boundaries?</div>
+          </li>
+          <li>
+            <div class="en-US">Areas other security researchers are working on?</div>
           </li>
         </ul>
         <footer class="notes">
@@ -350,6 +359,14 @@
         <ul>
           <li>
             <div class="en-US">Isolated modules</div>
+            <ul>
+              <li>
+                <div class="en-US">SpiderMonkey JS shell</div>
+              </li>
+              <li>
+                <div class="en-US">media shell</div>
+              </li>
+            </ul>
           </li>
           <li>
             <div class="en-US">Can be tested on Firefox Desktop</div>
@@ -418,7 +435,7 @@
         </header>
         <ul>
           <li>
-            <div class="en-US">Fuzzbug reports nowadays are:</div>
+            <div class="en-US">Fuzzbug reports</div>
             <ul>
               <li>
                 <div class="en-US">Concise</div>
@@ -427,7 +444,7 @@
                 <div class="en-US">Popular</div>
               </li>
               <li>
-                <div class="en-US">Sometimes duplicates of real-world bugs</div>
+                <div class="en-US">May be duplicates of real-world bugs</div>
               </li>
               <li>
                 <div class="en-US">Devs sometimes wait for fuzzbugs</div>
@@ -466,7 +483,7 @@ A comprehensive fuzz bug report can also provide more information on how to fix 
             <div class="en-US">Fix fuzzbugs</div>
           </li>
           <li>
-            <div class="en-US">Tests land on mozilla-central</div>
+            <div class="en-US">Tests land on trunk (master branch)</div>
           </li>
           <li>
             <div class="en-US">More starting points for fuzzing</div>
@@ -493,19 +510,19 @@ A comprehensive fuzz bug report can also provide more information on how to fix 
             <div class="en-US">Dynamic analysis tool support</div>
             <ul>
               <li>
-                ASan
+                <div class="en-US">AddressSanitizer (ASan)</div>
               </li>
               <li>
-                TSan
+                <div class="en-US">ThreadSanitizer (TSan)</div>
               </li>
               <li>
-                Valgrind
+                <div class="en-US">Valgrind</div>
               </li>
             </ul>
           </li>
         </ul>
         <footer class="notes">
-          <div class="en-US">Test components in isolation: Similar to SpiderMonkey shell but for mobile radio and USB; Dynamic analysis tool support: Run testsuites with dynamic analysis tools ideally before fuzzing</div>
+          <div class="en-US">Dynamic analysis tool support: Run testsuites with dynamic analysis tools ideally before fuzzing</div>
         </footer>
       </section>
     </div></div>
@@ -549,10 +566,15 @@ A comprehensive fuzz bug report can also provide more information on how to fix 
           </li>
           <li>
             <div class="en-US">Devices not powerful enough</div>
+            <ul>
+              <li>
+                Mitigation: ARM simulator binary
+              </li>
+            </ul>
           </li>
         </ul>
         <footer class="notes">
-          <div class="en-US"><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=877896">Lack of stacktraces</a> when Gaia apps crash; Lack ways to collect kernel failures; Automation frameworks need sufficient developer attention; Devices not powerful enough for dynamic analysis tools</div>
+          <div class="en-US">Lack ways to collect kernel failures; Automation frameworks need sufficient developer attention; Devices not powerful enough for dynamic analysis tools</div>
         </footer>
       </section>
     </div></div>
@@ -564,7 +586,7 @@ A comprehensive fuzz bug report can also provide more information on how to fix 
         </header>
         <ul>
           <li>
-            <div class="en-US">Patches land on the trunk (master) first</div>
+            <div class="en-US">Patches first land on trunk (master branch)</div>
           </li>
           <li>
             <div class="en-US">Backout when regressions occur</div>
@@ -612,27 +634,6 @@ A comprehensive fuzz bug report can also provide more information on how to fix 
       </section>
     </div></div>
     <!-- end slide block -->
-    <div id="prevmozpresentations" class="slide"><div>
-      <section>
-        <header>
-          <div class="en-US"><h2>Mozilla fuzzing presentations</h2></div>
-        </header>
-        <ul>
-          <li>
-            <a href="https://www.squarefree.com/fuzzing2012/presentation.xhtml">Fuzzing JavaScript And DOM</a> - Jesse Ruderman, 2012
-          </li>
-          <li>
-            <div class="en-US"><a href="https://garykwong.wordpress.com/2012/01/28/fuzzing-at-mozilla-brown-bag-on-january-30-1pm-pt/">Fuzzing at Mozilla</a> (with video) - Gary Kwong, 2012</div>
-          </li>
-          <li>
-            <div class="en-US"><a href="https://github.com/search?q=user%3Anth10sd+presentation">My other presentations available online</a></div>
-          </li>
-        </ul>
-        <footer class="notes">
-        </footer>
-      </section>
-    </div></div>
-    <!-- end slide block -->
     <div id="ossmozcode" class="slide"><div>
       <section>
         <header>
@@ -640,15 +641,15 @@ A comprehensive fuzz bug report can also provide more information on how to fix 
         </header>
         <ul>
           <li>
-            <a href="https://github.com/MozillaSecurity/funfuzz">funfuzz</a> (Gary Kwong &amp; Jesse Ruderman)
+            <a href="https://github.com/MozillaSecurity/funfuzz">funfuzz</a> (Gary Kwong)
             <ul>
               <li>
-                <div class="en-US">jsfunfuzz &amp; DOMFuzz harness</div>
+                <div class="en-US">jsfunfuzz harness</div>
               </li>
             </ul>
           </li>
           <li>
-            <a href="https://github.com/mozillasecurity/fuzzmanager">FuzzManager</a> (Christian Holler)
+            <a href="https://github.com/mozillasecurity/fuzzmanager">FuzzManager</a> (Christian Holler) &amp; EC2SpotManager
             <ul>
               <li>
                 <div class="en-US">Fuzzing management tools collection</div>
@@ -660,6 +661,34 @@ A comprehensive fuzz bug report can also provide more information on how to fix 
             <ul>
               <li>
                 <div class="en-US">Tool to manage EC2 instances at AWS</div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <footer class="notes">
+        </footer>
+      </section>
+    </div></div>
+    <!-- end slide block -->
+    <div id="ossmozcode2" class="slide"><div>
+      <section>
+        <header>
+          <div class="en-US"><h2>Mozilla Security GitHub projects (cont'd)</h2></div>
+        </header>
+        <ul>
+          <li>
+            <a href="https://github.com/MozillaSecurity/lithium">Lithium</a> (Jesse Schwartzentruber &amp; Gary Kwong)
+            <ul>
+              <li>
+                <div class="en-US">Line-based testcase reducer</div>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="https://github.com/MozillaSecurity/octo">octo</a> (Various)
+            <ul>
+              <li>
+                <div class="en-US">Fuzzing framework in JavaScript</div>
               </li>
             </ul>
           </li>
@@ -700,11 +729,8 @@ A comprehensive fuzz bug report can also provide more information on how to fix 
         </header>
         <img src="pictures/redpanda.jpg" class="right" alt="Red panda (Firefox)">
         <ul class="nobull">
-          <li class="active">
-            <div class="en-US">Mozilla Platform Fuzzing team</div>
-          </li>
           <li>
-            <div class="en-US">Translators</div>
+            <div class="en-US">OSS community</div>
           </li>
           <li>
             <div class="en-US">Developers</div>
